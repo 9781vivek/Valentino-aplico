@@ -19,10 +19,11 @@ const CONFIG = {
 
   /* ── Background Music ───────────────────────── */
   backgroundMusic: null,             // Set to an MP3 URL string to enable music
-  // e.g. "https://example.com/song.mp3"
 
   /* ── Email Proxy ─────────────────────────────── */
-  // The local proxy server handles API calls — key never touches the browser!
-  emailProxyUrl: "http://localhost:3001/send",
+  // Auto-detects if running locally or on a server
+  emailProxyUrl: window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3001/send" 
+    : "/api/send",
 
 };
