@@ -1168,10 +1168,10 @@ function spawnMiniConfetti(cx, cy) {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESEND EMAIL
+   EMAIL  (via local proxy — API key never touches browser)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 async function sendResultsEmail() {
-  if (!CONFIG.resendApiKey || CONFIG.resendApiKey.startsWith('re_YOUR')) return;
+  if (!CONFIG.emailProxyUrl) return;
 
   const rows = quizLog.map(entry => `
     <tr>
@@ -1212,15 +1212,10 @@ async function sendResultsEmail() {
     </div>`;
 
   try {
-    await fetch('https://api.resend.com/emails', {
+    await fetch(CONFIG.emailProxyUrl, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${CONFIG.resendApiKey}`,
-        'Content-Type':  'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from:    CONFIG.resendFromEmail,
-        to:      [CONFIG.resendToEmail],
         subject: `💘 Love Experiment Results — ${CONFIG.recipientName} completed the experiment!`,
         html,
       }),
