@@ -16,7 +16,7 @@ const SECRET = {
   resendToEmail:   process.env.RESEND_TO_EMAIL,
 };
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 if (!SECRET.resendApiKey) {
   console.error("❌ ERROR: RESEND_API_KEY not found in .env file!");
@@ -34,7 +34,31 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
-  if (req.method !== 'POST' || req.url !== '/send') {
+  // Serve the HTML page on the root URL
+  if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html')) {
+    const fs = require('fs');
+    const path = require('path');
+    fs.readFile(path.join(__dirname, 'love-experiment.html'), (err, content) => {
+      if (err) { res.writeHead(500); res.end("Error loading HTML"); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(content);
+    });
+    return;
+  }
+
+  // Serve config.js so the page can load it
+  if (req.method === 'GET' && req.url === '/config.js') {
+    const fs = require('fs');
+    const path = require('path');
+    fs.readFile(path.join(__dirname, 'config.js'), (err, content) => {
+      if (err) { res.writeHead(404); res.end(); return; }
+      res.writeHead(200, { 'Content-Type': 'application/javascript' });
+      res.end(content);
+    });
+    return;
+  }
+
+  if (req.method !== 'POST' || (req.url !== '/send' && req.url !== '/api/send')) {
     res.writeHead(404); res.end(); return;
   }
 
