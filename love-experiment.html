@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Very Important Experiment</title>
+  <title>The Official Love Experiment</title>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -142,6 +142,14 @@
     .modal-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.8rem; }
     .modal-buttons .btn { transition: transform 0.25s, box-shadow 0.25s; }
 
+    /* THEATRE / LOADING */
+    .theatre-screen { position: fixed; inset: 0; background: var(--ink); z-index: 1000; display: none; align-items: center; justify-content: center; color: #fff; flex-direction: column; }
+    .theatre-screen.active { display: flex; }
+    .theatre-msg { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 700; opacity: 0; transform: scale(0.9); transition: opacity 0.6s, transform 0.6s; margin-bottom: 2rem; }
+    .theatre-msg.show { opacity: 1; transform: scale(1); }
+    .loader-ring { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--brand); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* MISC */
     .loading-msg { font-size: 1rem; color: var(--muted); font-style: italic; min-height: 1.5rem; }
     .dot { animation: blink 1.2s infinite; }
@@ -151,7 +159,7 @@
     .confetti-piece { position: fixed; pointer-events: none; z-index: 200; animation: confettiFall linear forwards; }
     @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
     .progress-wrap { width: 100%; height: 6px; background: var(--brand-soft); border-radius: 50px; overflow: hidden; margin-bottom: 1.5rem; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand), #ff6b6b); border-radius: 50px; transition: width 1s linear; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand), #ff6b6b); border-radius: 50px; transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
     .pulse-ring { display: inline-block; font-size: 4rem; animation: pulseRing 1.2s ease-in-out infinite; }
     @keyframes pulseRing { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
     .equation { font-family: 'Sora', sans-serif; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 700; color: var(--ink); margin: 1.2rem 0; }
@@ -190,19 +198,25 @@
 <div class="bg-gradient"></div>
 <canvas id="hearts-canvas"></canvas>
 
+<!-- THEATRE SCREEN (LOADING JOURNEY) -->
+<div id="theatre-screen" class="theatre-screen">
+  <div id="theatre-msg" class="theatre-msg">Initializing Subject Analysis...</div>
+  <div class="loader-ring"></div>
+</div>
+
 <!-- SCREEN 1: LANDING -->
 <section id="screen-landing" class="screen active">
   <div class="card">
     <div class="tag">&#128300; Official Science Research Lab</div>
-    <h1 class="screen-title">Hello <span id="s1-name">Meenal</span> &#128064;</h1>
+    <h1 class="screen-title">Hello <span class="recipient-first">Meenal</span> &#128064;</h1>
     <p class="screen-sub">
-      You have been invited to participate in a <strong>very important scientific experiment.</strong><br><br>
-      This experiment determines whether you are officially the most amazing human in the universe.
+      You have been invited to participate in a <strong>transdimensional social experiment.</strong><br><br>
+      Our mission is to quantify the "Amazing Factor" of one specific individual.
     </p>
-    <p class="loading-msg">Calibrating instruments<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
+    <p class="loading-msg">Deep scanning emotional core<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
     <br>
-    <button class="btn btn-primary" id="btn-start">Start The Experiment &#128640;</button>
-    <p style="margin-top:1.2rem;font-size:0.8rem;color:var(--muted);">* No actual science is involved. Probably.</p>
+    <button class="btn btn-primary" id="btn-start">Accept Mission &#128640;</button>
+    <p style="margin-top:1.2rem;font-size:0.8rem;color:var(--muted);">* Results are final and statistically adorable.</p>
   </div>
 </section>
 
@@ -211,7 +225,7 @@
   <div id="game-canvas-wrap">
     <div id="game-hud">
       <div class="score-box">&#10084;&#65039; <span id="score-display">0</span></div>
-      <div style="font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--muted);font-weight:600;">Catch The Hearts!</div>
+      <div style="font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--muted);font-weight:600;">Harvest the Frequency!</div>
       <div class="timer-box">&#9201; <span id="timer-display">25</span>s</div>
     </div>
     <div id="game-hint"></div>
@@ -221,22 +235,22 @@
 <!-- SCREEN 3: RESULT -->
 <section id="screen-result" class="screen">
   <div class="card">
-    <div class="tag">&#128202; Experiment Results</div>
-    <h2 class="screen-title">Experiment Complete.</h2>
+    <div class="tag">&#128202; Capture Data</div>
+    <h2 class="screen-title">Extraction Complete.</h2>
     <div class="big-number" id="result-score">0</div>
-    <p class="screen-sub">hearts collected.<br>That is statistically <strong>very impressive.</strong><br><span style="font-size:0.9rem;">Science has never seen numbers like these.</span></p>
+    <p class="screen-sub">Units of pure love harvested.<br>Warning: <strong>This exceeds all known records.</strong><br><span style="font-size:0.9rem;">Level: God-Tier Adorable.</span></p>
     <div class="loading-msg" id="result-loading"></div>
     <br>
-    <button class="btn btn-primary" id="btn-to-quiz">Continue To Phase 2 &#129504;</button>
+    <button class="btn btn-primary" id="btn-to-quiz">Proceed to Calibration &#129504;</button>
   </div>
 </section>
 
 <!-- SCREEN 4: QUIZ -->
 <section id="screen-quiz" class="screen">
   <div class="card">
-    <div class="tag">&#129514; Important Interrogation</div>
-    <div class="progress-wrap"><div class="progress-fill" id="quiz-progress" style="width:33%"></div></div>
-    <h2 class="screen-title" id="quiz-question">Loading question...</h2>
+    <div class="tag">&#129514; Subject Calibration</div>
+    <div class="progress-wrap"><div class="progress-fill" id="quiz-progress" style="width:10%"></div></div>
+    <h2 class="screen-title" id="quiz-question">Scanning...</h2>
     <p class="screen-sub" id="quiz-sub"></p>
     <div class="quiz-buttons" id="quiz-options"></div>
     <div class="quiz-response" id="quiz-response"></div>
@@ -247,12 +261,12 @@
 <section id="screen-reveal" class="screen">
   <div class="card" style="max-width:640px;">
     <div class="confidential-stamp" id="conf-stamp">&#9940; CONFIDENTIAL</div>
-    <p class="screen-sub" style="margin-bottom:0.5rem;"><span id="s5-name">Meenal</span>, you have officially unlocked the final message.</p>
+    <p class="screen-sub" style="margin-bottom:0.5rem;"><span class="recipient-first">Meenal</span>, our research is concluded. Here is our finding:</p>
     <div class="pulse-ring" id="reveal-heart" style="opacity:0;transition:opacity 0.5s 0.5s;">&#10084;&#65039;</div>
     <div class="reveal-love" id="reveal-love">I love you &#10084;&#65039;</div>
     <div class="reveal-signature" id="reveal-sig">&#8212; Vivek Verma</div>
     <br><br>
-    <button class="btn btn-primary" id="btn-to-modal" style="opacity:0;transition:opacity 0.5s 2s;">See The Final Question &#128140;</button>
+    <button class="btn btn-primary" id="btn-to-modal" style="opacity:0;transition:opacity 0.5s 2s;">Unlock Secret Message &#128140;</button>
   </div>
 </section>
 
@@ -260,10 +274,10 @@
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
     <div class="pulse-ring">&#128140;</div>
-    <h2 class="screen-title" style="font-size:1.5rem;margin-top:0.8rem;"><span id="m-name">Meenal</span>, do you love <span id="m-sender">Vivek</span>?</h2>
-    <p class="screen-sub" style="margin-bottom:0;">Please think very carefully.<br><em style="font-size:0.85rem;">( science is watching )</em></p>
+    <h2 class="screen-title" style="font-size:1.5rem;margin-top:0.8rem;"><span class="recipient-first">Meenal</span>, do you love <span class="sender-first">Vivek</span>?</h2>
+    <p class="screen-sub" style="margin-bottom:0;">Data entry required.<br><em style="font-size:0.85rem;">( no pressure, says the supercomputer )</em></p>
     <div class="modal-buttons">
-      <button class="btn btn-primary" id="btn-yes"  data-dodge="true">Yes &#10084;&#65039;</button>
+      <button class="btn btn-primary" id="btn-yes"  data-dodge="false">Yes &#10084;&#65039;</button>
       <button class="btn btn-soft"    id="btn-yes2" data-dodge="true">Extremely Yes &#10084;&#65039;&#10084;&#65039;</button>
     </div>
   </div>
@@ -273,8 +287,8 @@
 <section id="screen-final" class="screen">
   <div class="card" style="max-width:620px;">
     <div class="tag">&#9989; Experiment Successful</div>
-    <h2 class="screen-title">Correct answer detected.</h2>
-    <p class="screen-sub">The experiment was <strong>wildly successful.</strong></p>
+    <h2 class="screen-title">The universe has spoken.</h2>
+    <p class="screen-sub">Final report: No one is more amazing than you.</p>
 
     <div class="dancer-stage">
       <svg class="dancer-svg" viewBox="0 0 140 230" xmlns="http://www.w3.org/2000/svg" overflow="visible">
@@ -346,34 +360,44 @@
     </div>
 
     <div class="progress-wrap"><div class="progress-fill" style="width:100%;"></div></div>
-    <p style="font-size:0.95rem;color:var(--muted);margin-bottom:0.5rem;">Thank you for participating in the most important experiment ever conducted.</p>
-    <div class="equation"><span id="f-recipient">Meenal</span> + <span id="f-sender">Vivek</span> = <span>&#10084;&#65039;</span></div>
-    <p class="loading-msg">Uploading results to the universe<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
+    <p style="font-size:0.95rem;color:var(--muted);margin-bottom:0.5rem;">Report generated by Vivek's Love Engine v2.0</p>
+    <div class="equation"><span class="recipient-first">Meenal</span> + <span class="sender-first">Vivek</span> = <span>&#10084;&#65039;</span></div>
+    <p class="loading-msg">Broadcasting findings to the stars<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
     <br>
-    <button class="btn btn-outline" id="btn-replay">&#128260; Play Again</button>
+    <button class="btn btn-outline" id="btn-replay">&#128260; Reset Engine</button>
   </div>
 </section>
 
 <script src="config.js"></script>
 <script>
-/* -------------------------------------------------------
-   CONFIG loaded from config.js — edit that file only!
-   Email is sent via proxy.js server (node proxy.js)
-   so the API key is NEVER visible in the browser.
-------------------------------------------------------- */
+/**
+ * ══════════════════════════════════════════════
+ *   LOVE EXPERIMENT ENGINE v2.0
+ *   Optimized for maximum cuteness and science.
+ * ══════════════════════════════════════════════
+ */
 
 let quizLog = [];
+let quizIndex = 0;
 
 const $ = id => document.getElementById(id);
 const firstName = n => n.split(' ')[0];
-const recipientFirst = firstName(CONFIG.recipientName);
-const senderFirst    = firstName(CONFIG.senderName);
 
-// Hydrate name slots
-['s1-name','s5-name','m-name','f-recipient'].forEach(id => $(id).textContent = recipientFirst);
-$('f-sender').textContent  = senderFirst;
-$('m-sender').textContent  = senderFirst;
-$('reveal-sig').textContent = '\u2014 ' + CONFIG.senderName;
+function hydrateUI() {
+  const rF = firstName(CONFIG.recipientName);
+  const sF = firstName(CONFIG.senderName);
+  
+  document.querySelectorAll('.recipient-first').forEach(el => el.textContent = rF);
+  document.querySelectorAll('.sender-first').forEach(el => el.textContent = sF);
+  $('reveal-sig').textContent = '\u2014 ' + CONFIG.senderName;
+  
+  // Custom theme color
+  if (CONFIG.themeColor) {
+    document.documentElement.style.setProperty('--brand', CONFIG.themeColor);
+  }
+}
+
+hydrateUI();
 
 /* ------- SCREEN MANAGEMENT ------- */
 const SCREENS = ['landing','game','result','quiz','reveal','final'];
@@ -382,6 +406,23 @@ function showScreen(name) {
   const el = $('screen-' + name);
   el.classList.add('active');
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function runTheatreSequence(msgs, nextFn) {
+  const theatre = $('theatre-screen');
+  const tMsg = $('theatre-msg');
+  theatre.classList.add('active');
+  
+  for (const msg of msgs) {
+    tMsg.classList.remove('show');
+    await new Promise(r => setTimeout(r, 400));
+    tMsg.textContent = msg;
+    tMsg.classList.add('show');
+    await new Promise(r => setTimeout(r, 1600));
+  }
+  
+  theatre.classList.remove('active');
+  nextFn();
 }
 
 /* ------- BACKGROUND HEARTS CANVAS ------- */
@@ -418,10 +459,17 @@ function showScreen(name) {
 })();
 
 /* ------- GAME ------- */
-$('btn-start').addEventListener('click', startGame);
+$('btn-start').addEventListener('click', () => {
+  runTheatreSequence([
+    "Scanning Environment...",
+    "Subject: " + firstName(CONFIG.recipientName) + " detected.",
+    "Bypassing Normal Reality...",
+    "Entering Heart Space."
+  ], startGame);
+});
 
 const HEART_EMOJIS = ['\u2764\uFE0F','\uD83D\uDC96','\uD83D\uDC97','\uD83D\uDC93','\uD83D\uDC9D','\uD83D\uDC95','\uD83E\uDE77','\uD83D\uDC9E'];
-const GAME_HINTS   = ["Heart detected! Keep going!","Wow, you're great at collecting love!","Is this practice for something?","Science approves of your reflexes!","Love density: increasing rapidly!","Calculating emotional capacity... high!","Pro heart catcher detected!","You're basically a love magnet!"];
+const GAME_HINTS   = ["Synchronization increasing!","Aesthetic levels off the charts!","Vivek's heart frequency detected nearby.","Collecting high-quality affection units.","System Status: Perfectly Smitten.","Neural pathways: Full of you.","Data suggests you are very loved."];
 
 let score = 0, gameTimer = null, spawnInterval = null, hintTimeout = null;
 let timeLeft = CONFIG.gameDuration;
@@ -433,22 +481,22 @@ function startGame() {
   const wrap = $('game-canvas-wrap');
   wrap.querySelectorAll('.floating-heart-el').forEach(h => h.remove());
   showScreen('game');
-  spawnInterval = setInterval(() => spawnHeart(wrap), 800);
+  spawnInterval = setInterval(() => spawnHeart(wrap), 750);
   gameTimer = setInterval(() => {
     timeLeft--;
     $('timer-display').textContent = timeLeft;
-    if (timeLeft <= 5) { $('timer-display').style.color = CONFIG.themeColor; $('timer-display').style.animation = 'pulseRing 0.6s ease-in-out infinite'; }
+    if (timeLeft <= 5) { $('timer-display').style.color = 'var(--brand)'; $('timer-display').style.animation = 'pulseRing 0.6s ease-in-out infinite'; }
     if (timeLeft <= 0) endGame();
   }, 1000);
-  showHint('Click the hearts to collect them! \uD83D\uDC98', 3000);
+  showHint('Click the hearts to collect love units! \uD83D\uDC98', 3500);
 }
 
 function spawnHeart(wrap) {
   const el  = document.createElement('div');
   el.className = 'floating-heart-el';
   el.textContent = HEART_EMOJIS[Math.floor(Math.random()*HEART_EMOJIS.length)];
-  const dur = 5 + Math.random()*8;
-  el.style.cssText = 'left:'+(5+Math.random()*88)+'vw;bottom:-60px;animation-duration:'+dur+'s;font-size:'+(2+Math.random()*1.5)+'rem;';
+  const dur = 4 + Math.random()*6;
+  el.style.cssText = 'left:'+(5+Math.random()*85)+'vw;bottom:-60px;animation-duration:'+dur+'s;font-size:'+(2+Math.random()*1.8)+'rem;';
   el.addEventListener('click', e => catchHeart(e, el, wrap));
   wrap.appendChild(el);
   setTimeout(() => el.remove(), dur*1000);
@@ -464,10 +512,10 @@ function catchHeart(e, el, wrap) {
   pop.style.cssText = 'left:'+e.clientX+'px;top:'+e.clientY+'px;';
   wrap.appendChild(pop);
   setTimeout(() => pop.remove(), 800);
-  el.style.transform = 'scale(1.6)'; el.style.opacity = '0';
-  setTimeout(() => el.remove(), 200);
-  if (score % 3 === 0) showHint(GAME_HINTS[Math.floor(Math.random()*GAME_HINTS.length)], 1800);
-  if ([5,10,15].includes(score)) spawnMiniConfetti(e.clientX, e.clientY);
+  el.style.transform = 'scale(2.5) rotate(15deg)'; el.style.opacity = '0';
+  setTimeout(() => el.remove(), 250);
+  if (score % 4 === 0) showHint(GAME_HINTS[Math.floor(Math.random()*GAME_HINTS.length)], 2000);
+  if ([5,15,30,50].includes(score)) spawnMiniConfetti(e.clientX, e.clientY);
 }
 
 function showHint(msg, dur) {
@@ -487,7 +535,12 @@ function endGame() {
 }
 
 function runResultMessages() {
-  const msgs = ['Analyzing heart-catching coefficient...','Cross-referencing cuteness data...','Calculating emotional bandwidth...','Consulting the love oracle...','Science confirms: 100% adorable.'];
+  const msgs = [
+    'Parsing collected emotional frequencies...',
+    'Matching results with Vivek\'s expectations...',
+    'Factorizing the Dream Ratio...',
+    'Result: 100% Match Found.'
+  ];
   let i = 0;
   const el = $('result-loading');
   el.textContent = msgs[i];
@@ -496,86 +549,85 @@ function runResultMessages() {
     if (i >= msgs.length) { clearInterval(iv); return; }
     el.style.opacity = 0;
     setTimeout(() => { el.textContent = msgs[i]; el.style.opacity = 1; el.style.transition = 'opacity 0.4s'; }, 300);
-  }, 1400);
+  }, 1200);
 }
 
-$('btn-to-quiz').addEventListener('click', startQuiz);
+$('btn-to-quiz').addEventListener('click', () => {
+  runTheatreSequence([
+    "Accessing Neural Link...",
+    "Subject Calibration Protocol Engaged.",
+    "Please answer carefully.",
+    "The stars are listening."
+  ], startQuiz);
+});
 
 /* ------- QUIZ ------- */
-const QUIZ_DATA = [
-  {
-    question: 'Important question for ' + recipientFirst + '.',
-    sub: 'Please answer honestly. A lot depends on this.',
-    options: [
-      { label: "I'm ready \uD83D\uDC4B",       response: "Great! Courage level: Maximum. \uD83E\uDD81 Proceeding..." },
-      { label: "Do I have a choice? \uD83E\uDD14", response: "The answer is no. But we respect the question! \uD83D\uDE04" },
-      { label: "...Fine \uD83D\uDE05",           response: "Excellent! Reluctant participation is still participation! \uD83D\uDCCB" }
-    ],
-    progress: '33%'
-  },
-  {
-    question: 'Do you believe in love?',
-    sub: 'This is a critical data point. Choose wisely. The universe is watching.',
-    options: [
-      { label: "Maybe \uD83E\uDD37",        response: "Hmm. We will accept 'maybe'. Our algorithms are suspicious. \uD83D\uDD0D" },
-      { label: "Obviously \uD83D\uDC85",    response: "CORRECT. A perfect answer. 10/10. Our sensors are glowing. \u2705" },
-      { label: "I need more data \uD83E\uDDEA", response: "A true scientist! Data is incoming... \uD83D\uDCCA" }
-    ],
-    progress: '66%'
-  },
-  {
-    question: 'On a scale of 1\u201310, how amazing is ' + recipientFirst + '?',
-    sub: 'Please answer based on the available evidence (you).',
-    options: [
-      { label: "Like a 7? \uD83D\uDE48",      response: "INCORRECT. Our sensors detected a much higher number. Just kidding. \uD83E\uDD2D" },
-      { label: "Probably a 10 \u2728",          response: "Correct! Though our instruments said 11. The scale wasn't big enough. \uD83C\uDF1F" },
-      { label: "Off the charts \uD83D\uDE80",  response: "SYSTEM OVERLOAD. Too much amazingness detected. \uD83C\uDF89\uD83C\uDF89\uD83C\uDF89" }
-    ],
-    progress: '100%'
-  }
-];
-
-let quizIndex = 0;
-function startQuiz() { quizIndex = 0; showScreen('quiz'); renderQuestion(); }
+function startQuiz() { 
+  quizIndex = 0; 
+  quizLog = [];
+  showScreen('quiz'); 
+  renderQuestion(); 
+}
 
 function renderQuestion() {
-  const q = QUIZ_DATA[quizIndex];
+  const q = CONFIG.quizData[quizIndex];
+  if (!q) { showReveal(); return; }
+
   const qEl = $('quiz-question'), sEl = $('quiz-sub'), oEl = $('quiz-options'), rEl = $('quiz-response');
   qEl.style.opacity = 0; sEl.style.opacity = 0;
+  
   setTimeout(() => {
     qEl.textContent = q.question; sEl.textContent = q.sub;
     qEl.style.transition = sEl.style.transition = 'opacity 0.4s';
     qEl.style.opacity = sEl.style.opacity = 1;
   }, 200);
-  $('quiz-progress').style.width = q.progress;
+
+  const prog = ((quizIndex) / CONFIG.quizData.length) * 100;
+  $('quiz-progress').style.width = prog + '%';
+  
   rEl.textContent = ''; oEl.innerHTML = '';
+  
   q.options.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'btn btn-outline';
-    btn.textContent = opt.label;
+    btn.innerHTML = opt.label;
     btn.addEventListener('click', () => selectAnswer(opt.response, btn, opt.label));
     oEl.appendChild(btn);
   });
 }
 
 function selectAnswer(response, clickedBtn, chosenLabel) {
-  quizLog.push({ question: QUIZ_DATA[quizIndex].question, chosen: chosenLabel });
+  quizLog.push({ question: CONFIG.quizData[quizIndex].question, chosen: chosenLabel });
   $('quiz-options').querySelectorAll('.btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; });
-  clickedBtn.style.opacity = '1'; clickedBtn.style.background = 'var(--brand-soft)'; clickedBtn.style.borderColor = 'var(--brand)';
+  
+  clickedBtn.style.opacity = '1'; 
+  clickedBtn.style.background = 'var(--brand-soft)'; 
+  clickedBtn.style.borderColor = 'var(--brand)';
+  clickedBtn.style.transform = 'scale(1.05)';
+  
   const rEl = $('quiz-response');
   rEl.style.animation = 'none'; void rEl.offsetWidth; rEl.style.animation = '';
   rEl.textContent = response;
-  setTimeout(() => { quizIndex++; quizIndex < QUIZ_DATA.length ? renderQuestion() : showReveal(); }, 2000);
+  
+  setTimeout(() => { 
+    quizIndex++; 
+    if (quizIndex < CONFIG.quizData.length) {
+      renderQuestion();
+    } else {
+      $('quiz-progress').style.width = '100%';
+      setTimeout(showReveal, 1000);
+    }
+  }, 2200);
 }
 
 /* ------- REVEAL ------- */
 function showReveal() {
   showScreen('reveal');
-  setTimeout(() => $('conf-stamp').classList.add('show'), 300);
-  setTimeout(() => ($('reveal-heart').style.opacity = '1'), 600);
-  setTimeout(() => $('reveal-love').classList.add('show'), 900);
-  setTimeout(() => $('reveal-sig').classList.add('show'), 1500);
-  setTimeout(() => ($('btn-to-modal').style.opacity = '1'), 2200);
+  setTimeout(() => $('conf-stamp').classList.add('show'), 400);
+  setTimeout(() => ($('reveal-heart').style.opacity = '1'), 800);
+  setTimeout(() => $('reveal-love').classList.add('show'), 1200);
+  setTimeout(() => $('reveal-sig').classList.add('show'), 2000);
+  setTimeout(() => ($('btn-to-modal').style.opacity = '1'), 3000);
   spawnEmojiBurst(window.innerWidth/2, window.innerHeight/2);
 }
 
@@ -585,136 +637,105 @@ $('btn-to-modal').addEventListener('click', openModal);
 let dodgeCount = 0;
 function openModal() { dodgeCount = 0; $('modal').classList.add('open'); setupDodge(); }
 function setupDodge() {
-  document.querySelectorAll('[data-dodge="true"]').forEach(btn => {
-    btn.addEventListener('mousemove', handleDodge);
-    btn.addEventListener('click', handleYes);
-  });
+  $('btn-yes').addEventListener('click', handleYes);
+  $('btn-yes2').addEventListener('click', handleYes);
+  $('btn-yes2').addEventListener('mousemove', handleDodge);
 }
+
 function handleDodge(e) {
-  if (dodgeCount >= 3) return;
+  if (dodgeCount >= 4) return;
   dodgeCount++;
   const btn = e.currentTarget;
-  const dx = (Math.random()-0.5)*160, dy = (Math.random()-0.5)*100;
-  btn.style.transform = 'translate('+dx+'px,'+dy+'px) rotate('+((Math.random()-0.5)*15)+'deg)';
+  const dx = (Math.random()-0.5)*200, dy = (Math.random()-0.5)*120;
+  btn.style.transform = 'translate('+dx+'px,'+dy+'px) rotate('+((Math.random()-0.5)*20)+'deg)';
   setTimeout(() => (btn.style.transform = ''), 400);
 }
+
 function handleYes(e) {
   e.stopPropagation();
   $('modal').classList.remove('open');
-  document.querySelectorAll('[data-dodge="true"]').forEach(b => b.removeEventListener('mousemove', handleDodge));
   triggerFinalCelebration();
 }
 
 /* ------- CELEBRATION ------- */
 function triggerFinalCelebration() {
-  launchConfetti(140);
+  launchConfetti(200);
   spawnEmojiBurst(window.innerWidth/2, window.innerHeight/2);
-  spawnEmojiBurst(window.innerWidth*0.2, window.innerHeight*0.3);
-  spawnEmojiBurst(window.innerWidth*0.8, window.innerHeight*0.3);
+  setTimeout(() => spawnEmojiBurst(window.innerWidth*0.2, window.innerHeight*0.3), 300);
+  setTimeout(() => spawnEmojiBurst(window.innerWidth*0.8, window.innerHeight*0.3), 600);
   sendResultsEmail();
   setTimeout(() => showScreen('final'), 1200);
 }
 
 function launchConfetti(count) {
-  const colors = ['#e91e8c','#ff6b6b','#ffc94d','#a855f7','#22d3ee','#ff6ec7','#34d399'];
+  const colors = ['#e91e8c','#ff6b6b','#ffc94d','#a855f7','#22d3ee'];
   for (let i = 0; i < count; i++) {
     setTimeout(() => {
       const c = document.createElement('div');
       c.className = 'confetti-piece';
-      c.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(6+Math.random()*10)+'px;height:'+(6+Math.random()*10)+'px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation-duration:'+(1.5+Math.random()*2)+'s;';
+      c.style.cssText = 'left:'+Math.random()*100+'vw;top:-20px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(6+Math.random()*12)+'px;height:'+(6+Math.random()*12)+'px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation-duration:'+(2+Math.random()*3)+'s;';
       document.body.appendChild(c);
-      setTimeout(() => c.remove(), 4000);
-    }, i*18);
+      setTimeout(() => c.remove(), 5000);
+    }, i*12);
   }
 }
 
 function spawnEmojiBurst(cx, cy) {
   const EMOJIS = ['\u2764\uFE0F','\uD83D\uDC96','\uD83D\uDC97','\u2728','\uD83C\uDF1F','\uD83D\uDC95','\uD83D\uDC9D','\uD83C\uDF89'];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 12; i++) {
     const el = document.createElement('div');
-    el.style.cssText = 'position:fixed;left:'+cx+'px;top:'+cy+'px;font-size:'+(1.5+Math.random())+'rem;pointer-events:none;z-index:999;transition:transform 0.9s ease-out,opacity 0.9s ease-out;opacity:1;';
+    el.style.cssText = 'position:fixed;left:'+cx+'px;top:'+cy+'px;font-size:'+(1.5+Math.random())+'rem;pointer-events:none;z-index:999;transition:transform 1s ease-out,opacity 1s ease-out;opacity:1;';
     el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
     document.body.appendChild(el);
-    const angle = Math.random()*Math.PI*2, dist = 80+Math.random()*180;
-    const tx = Math.cos(angle)*dist, ty = Math.sin(angle)*dist-100;
-    setTimeout(() => { el.style.transform = 'translate('+tx+'px,'+ty+'px) scale(1.5)'; el.style.opacity = '0'; }, 30);
-    setTimeout(() => el.remove(), 1000);
+    const angle = Math.random()*Math.PI*2, dist = 100+Math.random()*220;
+    const tx = Math.cos(angle)*dist, ty = Math.sin(angle)*dist-120;
+    setTimeout(() => { el.style.transform = 'translate('+tx+'px,'+ty+'px) scale(1.8)'; el.style.opacity = '0'; }, 50);
+    setTimeout(() => el.remove(), 1100);
   }
 }
 
 function spawnMiniConfetti(cx, cy) {
   const colors = ['#e91e8c','#ff6ec7','#ffc94d','#ff6b6b'];
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 20; i++) {
     const c = document.createElement('div');
     c.className = 'confetti-piece';
-    c.style.cssText = 'left:'+(cx+(Math.random()-0.5)*60)+'px;top:'+cy+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:7px;height:7px;border-radius:50%;animation-duration:0.9s;';
+    c.style.cssText = 'left:'+(cx+(Math.random()-0.5)*80)+'px;top:'+cy+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:8px;height:8px;border-radius:50%;animation-duration:1s;';
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 1200);
+    setTimeout(() => c.remove(), 1300);
   }
 }
 
-/* ------- EMAIL (via proxy.js — key never reaches the browser) ------- */
+/* ------- EMAIL (via proxy.js) ------- */
 async function sendResultsEmail() {
   if (!CONFIG.emailProxyUrl) return;
 
   const rows = quizLog.map(function(entry) {
-    return '<tr>' +
-      '<td style="padding:10px 14px;border-bottom:1px solid #f0d6e8;color:#666;font-size:0.9rem;">' + entry.question + '</td>' +
-      '<td style="padding:10px 14px;border-bottom:1px solid #f0d6e8;font-weight:700;color:#e91e8c;font-size:0.9rem;">' + entry.chosen + '</td>' +
-    '</tr>';
+    return '<tr><td style="padding:10px;border-bottom:1px solid #eee;">' + entry.question + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:bold;color:#e91e8c;">' + entry.chosen + '</td></tr>';
   }).join('');
 
-  var emailHtml =
-    '<div style="font-family:sans-serif;max-width:580px;margin:0 auto;background:#fff5fa;border-radius:22px;padding:2.5rem;">' +
-      '<h1 style="color:#e91e8c;font-size:2rem;margin-bottom:0.3rem;">Love Experiment - Results</h1>' +
-      '<p style="color:#9b7a9e;margin-top:0;">The most important experiment ever conducted has concluded.</p>' +
-      '<div style="background:#fff;border-radius:14px;padding:1.4rem;margin:1.5rem 0;border:1.5px solid #f0d6e8;">' +
-        '<h2 style="color:#2d1b3d;font-size:1rem;margin-bottom:0.8rem;">Game Results</h2>' +
-        '<p style="margin:0.3rem 0;"><strong>Player:</strong> ' + CONFIG.recipientName + '</p>' +
-        '<p style="margin:0.3rem 0;"><strong>Hearts Collected:</strong> ' + score + '</p>' +
-        '<p style="margin:0.3rem 0;"><strong>Game Duration:</strong> ' + CONFIG.gameDuration + 's</p>' +
-        '<p style="margin:0.3rem 0;"><strong>Completed At:</strong> ' + new Date().toLocaleString() + '</p>' +
-      '</div>' +
-      '<div style="background:#fff;border-radius:14px;padding:1.4rem;margin:1.5rem 0;border:1.5px solid #f0d6e8;">' +
-        '<h2 style="color:#2d1b3d;font-size:1rem;margin-bottom:0.8rem;">Quiz Answers</h2>' +
-        '<table style="width:100%;border-collapse:collapse;">' +
-          '<thead><tr style="background:#fff5fa;">' +
-            '<th style="padding:8px 14px;text-align:left;color:#9b7a9e;font-weight:600;font-size:0.85rem;">Question</th>' +
-            '<th style="padding:8px 14px;text-align:left;color:#9b7a9e;font-weight:600;font-size:0.85rem;">Answer Chosen</th>' +
-          '</tr></thead>' +
-          '<tbody>' + rows + '</tbody>' +
-        '</table>' +
-      '</div>' +
-      '<p style="text-align:center;font-size:1.3rem;color:#e91e8c;margin-top:1.5rem;">' + CONFIG.recipientName + ' + ' + CONFIG.senderName + ' = Love</p>' +
-      '<p style="text-align:center;color:#9b7a9e;font-size:0.8rem;margin-top:0.5rem;">Sent with love by the Official Science Research Lab</p>' +
-    '</div>';
+  const emailHtml = '<div style="font-family:sans-serif;background:#fff5fa;padding:2rem;border-radius:15px;"><h1 style="color:#e91e8c;">Experimental Data Captured</h1><p>The subject, ' + CONFIG.recipientName + ', has completed the journey.</p><h3>Game Insights</h3><p>Hearts Collected: ' + score + '</p><h3>Calibration Insights</h3><table style="width:100%">' + rows + '</table><p style="margin-top:2rem">Sent by the Official Love Lab</p></div>';
 
   try {
     await fetch(CONFIG.emailProxyUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        subject: 'Love Experiment Results - ' + CONFIG.recipientName + ' completed the experiment!',
+        subject: '🔬 Lab Results: ' + firstName(CONFIG.recipientName) + ' completed the Experiment!',
         html: emailHtml
       })
     });
-  } catch (err) { /* silent - never interrupt the moment */ }
+  } catch (err) {}
 }
 
 /* ------- REPLAY ------- */
 $('btn-replay').addEventListener('click', () => {
-  ['conf-stamp','reveal-love','reveal-sig'].forEach(id => $(id).classList.remove('show'));
-  $('reveal-heart').style.opacity = '0';
-  $('btn-to-modal').style.opacity = '0';
-  $('timer-display').style.color  = '';
-  $('timer-display').style.animation = '';
-  showScreen('landing');
+  window.location.reload();
 });
 
-/* ------- BACKGROUND MUSIC ------- */
+/* ------- MUSIC ------- */
 if (CONFIG.backgroundMusic) {
   const audio = new Audio(CONFIG.backgroundMusic);
-  audio.loop = true; audio.volume = 0.35;
+  audio.loop = true; audio.volume = 0.3;
   document.addEventListener('click', () => audio.play().catch(() => {}), { once: true });
 }
 </script>
