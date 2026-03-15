@@ -8,8 +8,8 @@
 const CONFIG = {
 
   /* ── Names ─────────────────────────────────── */
-  recipientName: "Meenal Chettri",   // The lucky recipient
-  senderName:    "Vivek Verma",      // The sender (you!)
+  recipientName: "RECIPIENT_PLACEHOLDER", // Managed via .env / Render Env Vars
+  senderName:    "SENDER_PLACEHOLDER",    // Managed via .env / Render Env Vars
 
   /* ── Theme ──────────────────────────────────── */
   themeColor: "#e91e8c",             // Main brand/accent color (CSS hex)

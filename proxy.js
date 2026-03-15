@@ -50,10 +50,20 @@ const server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/config.js') {
     const fs = require('fs');
     const path = require('path');
-    fs.readFile(path.join(__dirname, 'config.js'), (err, content) => {
+    fs.readFile(path.join(__dirname, 'config.js'), 'utf8', (err, content) => {
       if (err) { res.writeHead(404); res.end(); return; }
+      
+      // DYNAMIC INJECTION: Replace names with values from .env
+      let dynamicContent = content;
+      if (process.env.RECIPIENT_NAME) {
+        dynamicContent = dynamicContent.replace(/recipientName:\s*".*?"/, `recipientName: "${process.env.RECIPIENT_NAME}"`);
+      }
+      if (process.env.SENDER_NAME) {
+        dynamicContent = dynamicContent.replace(/senderName:\s*".*?"/, `senderName: "${process.env.SENDER_NAME}"`);
+      }
+
       res.writeHead(200, { 'Content-Type': 'application/javascript' });
-      res.end(content);
+      res.end(dynamicContent);
     });
     return;
   }
