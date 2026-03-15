@@ -41,7 +41,7 @@
 
     .card {
       background: var(--panel); border: 1.5px solid var(--border);
-      border-radius: var(--radius-lg); padding: clamp(2rem, 6vw, 3.5rem);
+      border-radius: var(--radius-lg); padding: clamp(1.8rem, 5vw, 3rem);
       max-width: 560px; width: 100%; box-shadow: var(--shadow-strong);
       animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
     }
@@ -57,11 +57,11 @@
       padding: 0.35rem 1rem; border-radius: 50px; margin-bottom: 1.4rem;
     }
     .screen-title {
-      font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 5vw, 2.6rem);
-      font-weight: 800; color: var(--ink); line-height: 1.2; margin-bottom: 1rem;
+      font-family: 'Sora', sans-serif; font-size: clamp(1.5rem, 5vw, 2.4rem);
+      font-weight: 800; color: var(--ink); line-height: 1.2; margin-bottom: 0.8rem;
     }
     .screen-title span { color: var(--brand); }
-    .screen-sub { font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .screen-sub { font-size: clamp(0.9rem, 2.5vw, 1.05rem); color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
 
     .btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -78,7 +78,6 @@
     .btn-primary:hover { box-shadow: 0 10px 30px rgba(233,30,140,0.45); }
     .btn-outline { background: transparent; border: 2px solid var(--brand); color: var(--brand); }
     .btn-outline:hover { background: var(--brand-soft); }
-    .btn-soft { background: var(--brand-soft); color: var(--brand); }
 
     /* GAME */
     #screen-game { padding: 0; }
@@ -97,7 +96,7 @@
       background: rgba(255,255,255,0.9); backdrop-filter: blur(8px);
       border: 1.5px solid var(--border); border-radius: 50px;
       padding: 0.7rem 1.8rem; font-size: 0.9rem; font-weight: 600; color: var(--brand);
-      opacity: 0; transition: opacity 0.4s; white-space: nowrap; max-width: 90vw; z-index: 5;
+      opacity: 0; transition: opacity 0.4s; z-index: 5;
     }
     #game-hint.show { opacity: 1; }
     .floating-heart-el {
@@ -105,92 +104,56 @@
       transition: transform 0.15s; animation: floatUp linear forwards; z-index: 4;
       filter: drop-shadow(0 2px 8px rgba(233,30,140,0.3));
     }
-    .floating-heart-el:hover { transform: scale(1.25); }
     @keyframes floatUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-120vh); } }
     .pop-text { position: absolute; font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 800; color: var(--brand); pointer-events: none; animation: popOut 0.8s ease-out forwards; z-index: 6; }
     @keyframes popOut { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-60px) scale(1.3); } }
 
-    /* RESULT / QUIZ */
-    .big-number {
-      font-family: 'Sora', sans-serif; font-size: clamp(4rem, 14vw, 8rem); font-weight: 800;
-      background: linear-gradient(135deg, var(--brand), #ff6b6b);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      line-height: 1; margin: 0.5rem 0;
-    }
-    .quiz-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-top: 1.5rem; }
-    .quiz-response { margin-top: 1.2rem; font-size: 1rem; color: var(--brand); font-weight: 600; min-height: 1.8rem; animation: fadeInUp 0.4s ease both; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    /* CHARACTERS & ANIMATIONS */
+    .dancer-stage { height: 180px; width: 100%; display: flex; justify-content: center; align-items: flex-end; margin-bottom: 1.5rem; overflow: visible; position: relative; }
+    .char-container { position: relative; display: flex; align-items: flex-end; gap: 10px; }
+    .char-svg { width: 110px; height: 160px; overflow: visible; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1)); }
 
-    /* REVEAL */
-    .confidential-stamp {
-      display: inline-block; border: 4px solid var(--brand); border-radius: 12px;
-      padding: 0.3rem 1.2rem; font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 800;
-      color: var(--brand); letter-spacing: 0.2em; text-transform: uppercase;
-      transform: rotate(-4deg); margin-bottom: 1.5rem; opacity: 0;
-      transition: opacity 0.5s 0.3s, transform 0.5s 0.3s;
-    }
-    .confidential-stamp.show { opacity: 1; transform: rotate(-4deg) scale(1); }
-    .reveal-love { font-family: 'Sora', sans-serif; font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 800; line-height: 1.3; opacity: 0; transform: scale(0.8); transition: opacity 0.6s 0.8s, transform 0.6s 0.8s; }
-    .reveal-love.show { opacity: 1; transform: scale(1); }
-    .reveal-signature { font-size: clamp(0.95rem, 2vw, 1.1rem); color: var(--muted); margin-top: 0.5rem; font-style: italic; opacity: 0; transition: opacity 0.6s 1.4s; }
-    .reveal-signature.show { opacity: 1; }
+    /* Poses */
+    .pose-wave .char-arm-right { transform-box: fill-box; transform-origin: top left; animation: waveAction 0.6s ease-in-out infinite alternate; }
+    @keyframes waveAction { from { transform: rotate(-10deg); } to { transform: rotate(70deg); } }
 
-    /* MODAL */
-    .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(45,27,61,0.55); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: var(--panel); border-radius: var(--radius-lg); padding: clamp(1.8rem, 5vw, 2.8rem); max-width: 480px; width: 100%; text-align: center; box-shadow: var(--shadow-strong); animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
-    .modal-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.8rem; }
-    .modal-buttons .btn { transition: transform 0.25s, box-shadow 0.25s; }
+    .pose-walk .char-svg { animation: walkBob 0.5s ease-in-out infinite alternate; }
+    @keyframes walkBob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+    .pose-walk .char-leg { transform-box: fill-box; transform-origin: top center; animation: legSwing 0.5s ease-in-out infinite alternate; }
+    @keyframes legSwing { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
 
-    /* THEATRE / LOADING */
+    .pose-think .char-arm-right { transform-box: fill-box; transform-origin: top left; transform: rotate(-100deg) translateY(-5px); animation: scratchAction 0.8s ease-in-out infinite alternate; }
+    @keyframes scratchAction { from { transform: rotate(-95deg); } to { transform: rotate(-105deg); } }
+
+    .pose-hug .char-container { gap: -30px; }
+    .pose-hug .char-vivek { transform: translateX(25px); }
+    .pose-hug .char-meenal { transform: translateX(-25px); }
+    .pose-hug .char-arm { transform: rotate(40deg); }
+
+    .pose-hold-hands .char-container { gap: 5px; }
+    .pose-hold-hands .char-arm-inner { transform: rotate(15deg); }
+
+    /* THEATRE SCREEN */
     .theatre-screen { position: fixed; inset: 0; background: var(--ink); z-index: 1000; display: none; align-items: center; justify-content: center; color: #fff; flex-direction: column; }
     .theatre-screen.active { display: flex; }
-    .theatre-msg { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 700; opacity: 0; transform: scale(0.9); transition: opacity 0.6s, transform 0.6s; margin-bottom: 2rem; }
+    .theatre-msg { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 700; opacity: 0; transform: scale(0.95); transition: opacity 0.5s, transform 0.5s; text-align: center; padding: 0 2rem; }
     .theatre-msg.show { opacity: 1; transform: scale(1); }
-    .loader-ring { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--brand); border-radius: 50%; animation: spin 1s linear infinite; }
+    .loader-ring { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--brand); border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 2rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* MISC */
-    .loading-msg { font-size: 1rem; color: var(--muted); font-style: italic; min-height: 1.5rem; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand), #ff6b6b); border-radius: 50px; transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+    .progress-wrap { width: 100%; height: 6px; background: var(--brand-soft); border-radius: 50px; overflow: hidden; margin-bottom: 1.5rem; }
+    .big-number { font-family: 'Sora', sans-serif; font-size: clamp(3.5rem, 12vw, 6rem); font-weight: 800; background: linear-gradient(135deg, var(--brand), #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+    .reveal-love { font-family: 'Sora', sans-serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 800; line-height: 1.3; opacity: 0; transform: scale(0.9); transition: 0.6s 0.8s; }
+    .reveal-love.show { opacity: 1; transform: scale(1); }
+    .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(45,27,61,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--panel); border-radius: var(--radius-lg); padding: 2.5rem; max-width: 460px; width: 100%; text-align: center; box-shadow: var(--shadow-strong); }
     .dot { animation: blink 1.2s infinite; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink { 0%,80%,100%{opacity:0.2} 40%{opacity:1} }
+    @keyframes blink { 0%,100%{opacity:0.2} 50%{opacity:1} }
     .confetti-piece { position: fixed; pointer-events: none; z-index: 200; animation: confettiFall linear forwards; }
     @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
-    .progress-wrap { width: 100%; height: 6px; background: var(--brand-soft); border-radius: 50px; overflow: hidden; margin-bottom: 1.5rem; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand), #ff6b6b); border-radius: 50px; transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-    .pulse-ring { display: inline-block; font-size: 4rem; animation: pulseRing 1.2s ease-in-out infinite; }
-    @keyframes pulseRing { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-    .equation { font-family: 'Sora', sans-serif; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 700; color: var(--ink); margin: 1.2rem 0; }
-    .equation span { color: var(--brand); }
-
-    /* DANCER */
-    .dancer-stage { display: flex; justify-content: center; align-items: flex-end; margin: 0.5rem auto 1rem; height: 190px; }
-    .dancer-svg { width: 130px; height: 190px; transform-origin: 50% 100%; animation: danceSway 0.75s ease-in-out infinite alternate; filter: drop-shadow(0 6px 18px rgba(233,30,140,0.28)); overflow: visible; }
-    @keyframes danceSway { from { transform: rotate(-5deg) translateY(0); } to { transform: rotate(5deg) translateY(-5px); } }
-    .d-left-arm  { transform-box: fill-box; transform-origin: top right; animation: leftArmWave 0.75s ease-in-out infinite alternate; }
-    @keyframes leftArmWave  { from { transform: rotate(-30deg); } to { transform: rotate(20deg); } }
-    .d-right-arm { transform-box: fill-box; transform-origin: top left;  animation: rightArmWave 0.75s ease-in-out infinite alternate-reverse; }
-    @keyframes rightArmWave { from { transform: rotate(-20deg); } to { transform: rotate(30deg); } }
-    .d-skirt     { transform-box: fill-box; transform-origin: top center; animation: skirtSway 0.75s ease-in-out infinite alternate; }
-    @keyframes skirtSway { from { transform: skewX(-5deg); } to { transform: skewX(5deg); } }
-    .d-left-leg  { transform-box: fill-box; transform-origin: top center; animation: legStepL 0.75s ease-in-out infinite alternate; }
-    @keyframes legStepL { from { transform: translateX(-4px) rotate(-4deg); } to { transform: translateX(4px) rotate(4deg); } }
-    .d-right-leg { transform-box: fill-box; transform-origin: top center; animation: legStepR 0.75s ease-in-out infinite alternate-reverse; }
-    @keyframes legStepR { from { transform: translateX(4px) rotate(4deg); } to { transform: translateX(-4px) rotate(-4deg); } }
-    .d-sparkle { animation: dspark 1.3s ease-in-out infinite; }
-    .d-sparkle.s2 { animation-delay: 0.35s; }
-    .d-sparkle.s3 { animation-delay: 0.70s; }
-    .d-sparkle.s4 { animation-delay: 1.05s; }
-    .d-sparkle.s5 { animation-delay: 0.18s; }
-    @keyframes dspark { 0%,100% { opacity: 0.1; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.2); } }
-
-    @media (max-width: 480px) {
-      .card { padding: 1.6rem 1.2rem; }
-      .btn  { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
-      .tag  { font-size: 0.65rem; }
-    }
   </style>
 </head>
 <body>
@@ -198,25 +161,20 @@
 <div class="bg-gradient"></div>
 <canvas id="hearts-canvas"></canvas>
 
-<!-- THEATRE SCREEN (LOADING JOURNEY) -->
+<!-- THEATRE SCREEN -->
 <div id="theatre-screen" class="theatre-screen">
-  <div id="theatre-msg" class="theatre-msg">Initializing Subject Analysis...</div>
+  <div id="theatre-msg" class="theatre-msg"></div>
   <div class="loader-ring"></div>
 </div>
 
 <!-- SCREEN 1: LANDING -->
 <section id="screen-landing" class="screen active">
   <div class="card">
-    <div class="tag">&#128300; Official Science Research Lab</div>
-    <h1 class="screen-title">Hello <span class="recipient-first">Meenal</span> &#128064;</h1>
-    <p class="screen-sub">
-      You have been invited to participate in a <strong>transdimensional social experiment.</strong><br><br>
-      Our mission is to quantify the "Amazing Factor" of one specific individual.
-    </p>
-    <p class="loading-msg">Deep scanning emotional core<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
-    <br>
-    <button class="btn btn-primary" id="btn-start">Accept Mission &#128640;</button>
-    <p style="margin-top:1.2rem;font-size:0.8rem;color:var(--muted);">* Results are final and statistically adorable.</p>
+    <div id="landing-stage" class="dancer-stage pose-wave"></div>
+    <div class="tag">🧪 Official Science Lab</div>
+    <h1 class="screen-title">Welcome <span class="recipient-first">Subject</span> 👋</h1>
+    <p class="screen-sub">Our sensors detect a person of high-interest. Please step into the scanner for a full emotional audit.</p>
+    <button class="btn btn-primary" id="btn-start">Step Into The Scanner 🚀</button>
   </div>
 </section>
 
@@ -224,9 +182,8 @@
 <section id="screen-game" class="screen">
   <div id="game-canvas-wrap">
     <div id="game-hud">
-      <div class="score-box">&#10084;&#65039; <span id="score-display">0</span></div>
-      <div style="font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--muted);font-weight:600;">Harvest the Frequency!</div>
-      <div class="timer-box">&#9201; <span id="timer-display">25</span>s</div>
+      <div class="score-box">❤️ <span id="score-display">0</span></div>
+      <div class="timer-box">⏱️ <span id="timer-display">25</span>s</div>
     </div>
     <div id="game-hint"></div>
   </div>
@@ -235,136 +192,59 @@
 <!-- SCREEN 3: RESULT -->
 <section id="screen-result" class="screen">
   <div class="card">
-    <div class="tag">&#128202; Capture Data</div>
-    <h2 class="screen-title">Extraction Complete.</h2>
+    <div class="tag">📊 Analysis Result</div>
+    <h2 class="screen-title">Scan Complete.</h2>
     <div class="big-number" id="result-score">0</div>
-    <p class="screen-sub">Units of pure love harvested.<br>Warning: <strong>This exceeds all known records.</strong><br><span style="font-size:0.9rem;">Level: God-Tier Adorable.</span></p>
-    <div class="loading-msg" id="result-loading"></div>
-    <br>
-    <button class="btn btn-primary" id="btn-to-quiz">Proceed to Calibration &#129504;</button>
+    <p class="screen-sub">Pure love units detected.<br><strong>Status: Adorable level critical!</strong></p>
+    <div id="result-loading" class="screen-sub" style="font-style:italic;">Processing...</div>
+    <button class="btn btn-primary" id="btn-to-quiz">Proceed to Phase 2 🧬</button>
   </div>
 </section>
 
 <!-- SCREEN 4: QUIZ -->
 <section id="screen-quiz" class="screen">
   <div class="card">
-    <div class="tag">&#129514; Subject Calibration</div>
-    <div class="progress-wrap"><div class="progress-fill" id="quiz-progress" style="width:10%"></div></div>
-    <h2 class="screen-title" id="quiz-question">Scanning...</h2>
+    <div id="quiz-stage" class="dancer-stage pose-default"></div>
+    <div class="progress-wrap"><div class="progress-fill" id="quiz-progress" style="width:0%"></div></div>
+    <h2 class="screen-title" id="quiz-question">Question?</h2>
     <p class="screen-sub" id="quiz-sub"></p>
-    <div class="quiz-buttons" id="quiz-options"></div>
-    <div class="quiz-response" id="quiz-response"></div>
+    <div id="quiz-options" class="quiz-buttons" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+    <div id="quiz-response" style="margin-top:1.5rem;color:var(--brand);font-weight:600;min-height:1.5rem;"></div>
   </div>
 </section>
 
 <!-- SCREEN 5: REVEAL -->
 <section id="screen-reveal" class="screen">
-  <div class="card" style="max-width:640px;">
-    <div class="confidential-stamp" id="conf-stamp">&#9940; CONFIDENTIAL</div>
-    <p class="screen-sub" style="margin-bottom:0.5rem;"><span class="recipient-first">Meenal</span>, our research is concluded. Here is our finding:</p>
-    <div class="pulse-ring" id="reveal-heart" style="opacity:0;transition:opacity 0.5s 0.5s;">&#10084;&#65039;</div>
-    <div class="reveal-love" id="reveal-love">I love you &#10084;&#65039;</div>
-    <div class="reveal-signature" id="reveal-sig">&#8212; Vivek Verma</div>
-    <br><br>
-    <button class="btn btn-primary" id="btn-to-modal" style="opacity:0;transition:opacity 0.5s 2s;">Unlock Secret Message &#128140;</button>
+  <div class="card">
+    <div class="tag">🔒 Decrypted Message</div>
+    <p class="screen-sub">Decryption complete. Final result for <span class="recipient-first">Subject</span>:</p>
+    <div style="font-size:4rem; margin:1rem 0;">❤️</div>
+    <div id="reveal-love" class="reveal-love">I love you!</div>
+    <div id="reveal-sig" class="screen-sub" style="font-style:italic;opacity:0;">— Vivek</div>
+    <br>
+    <button class="btn btn-primary" id="btn-to-modal" style="opacity:0; transition: opacity 0.8s;">See Secret Proposal 💌</button>
   </div>
 </section>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal">
+<div id="modal" class="modal-overlay">
   <div class="modal-box">
-    <div class="pulse-ring">&#128140;</div>
-    <h2 class="screen-title" style="font-size:1.5rem;margin-top:0.8rem;"><span class="recipient-first">Meenal</span>, do you love <span class="sender-first">Vivek</span>?</h2>
-    <p class="screen-sub" style="margin-bottom:0;">Data entry required.<br><em style="font-size:0.85rem;">( no pressure, says the supercomputer )</em></p>
-    <div class="modal-buttons">
-      <button class="btn btn-primary" id="btn-yes"  data-dodge="false">Yes &#10084;&#65039;</button>
-      <button class="btn btn-soft"    id="btn-yes2" data-dodge="true">Extremely Yes &#10084;&#65039;&#10084;&#65039;</button>
+    <h2 class="screen-title"><span class="recipient-first">Subject</span>, do you love <span class="sender-first">Vivek</span>?</h2>
+    <div style="display:flex;gap:15px;justify-content:center;margin-top:2rem;">
+      <button class="btn btn-primary" id="btn-yes">Yes ❤️</button>
+      <button class="btn btn-outline" id="btn-yes2" data-dodge="true">Extremely Yes! 💖</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 6: FINAL -->
+<!-- FINAL SCREEN -->
 <section id="screen-final" class="screen">
-  <div class="card" style="max-width:620px;">
-    <div class="tag">&#9989; Experiment Successful</div>
-    <h2 class="screen-title">The universe has spoken.</h2>
-    <p class="screen-sub">Final report: No one is more amazing than you.</p>
-
-    <div class="dancer-stage">
-      <svg class="dancer-svg" viewBox="0 0 140 230" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-        <text x="2"   y="68"  font-size="13" class="d-sparkle s1">&#10024;</text>
-        <text x="118" y="55"  font-size="11" class="d-sparkle s2">&#11088;</text>
-        <text x="0"   y="148" font-size="9"  class="d-sparkle s3">&#128171;</text>
-        <text x="120" y="155" font-size="11" class="d-sparkle s4">&#10024;</text>
-        <text x="56"  y="12"  font-size="10" class="d-sparkle s5">&#127775;</text>
-        <ellipse cx="70" cy="44" rx="25" ry="22" fill="#2d1b1b"/>
-        <circle cx="46" cy="34" r="11" fill="#2d1b1b"/>
-        <circle cx="94" cy="34" r="11" fill="#2d1b1b"/>
-        <circle cx="70" cy="48" r="24" fill="#FFCBA4"/>
-        <ellipse cx="62" cy="45" rx="3.5" ry="4.5" fill="#1a0a0a"/>
-        <circle  cx="63.5" cy="43.5" r="1.4" fill="white"/>
-        <ellipse cx="78" cy="45" rx="3.5" ry="4.5" fill="#1a0a0a"/>
-        <circle  cx="79.5" cy="43.5" r="1.4" fill="white"/>
-        <line x1="59" y1="41.5" x2="57" y2="39" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="62" y1="40.5" x2="61" y2="38" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="75" y1="40.5" x2="74" y2="38" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="78" y1="41.5" x2="80" y2="39" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="56" cy="51" rx="5" ry="3" fill="#ffb3c6" opacity="0.85"/>
-        <ellipse cx="84" cy="51" rx="5" ry="3" fill="#ffb3c6" opacity="0.85"/>
-        <ellipse cx="70" cy="50" rx="2"  ry="1.2" fill="#f0a88a" opacity="0.6"/>
-        <path d="M 63 57 Q 70 63 77 57" stroke="#e91e8c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M 64 58 Q 70 62 76 58 Q 70 61 64 58" fill="white" opacity="0.75"/>
-        <path d="M 46 36 Q 48 22 70 20 Q 92 22 94 36" fill="#2d1b1b"/>
-        <path d="M 46 36 Q 43 42 46 52" fill="#2d1b1b" opacity="0.9"/>
-        <path d="M 94 36 Q 97 42 94 52" fill="#2d1b1b" opacity="0.9"/>
-        <circle cx="46" cy="34" r="9" fill="#3d2020"/>
-        <circle cx="94" cy="34" r="9" fill="#3d2020"/>
-        <path d="M 88 27 C 88 22 96 22 96 27 C 96 22 104 22 104 27 C 104 32 96 32 96 27 C 96 32 88 32 88 27" fill="#ff6ec7"/>
-        <circle cx="96" cy="27" r="3.5" fill="#e91e8c"/>
-        <rect x="63" y="70" width="14" height="10" rx="5" fill="#FFCBA4"/>
-        <path d="M 38 86 Q 52 74 70 76 Q 88 74 102 86 L 104 122 Q 70 132 36 122 Z" fill="#e91e8c"/>
-        <path d="M 50 78 Q 70 88 90 78" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
-        <path d="M 70 100 C 70 100 62 93 62 100 C 62 107 70 113 70 113 C 70 113 78 107 78 100 C 78 93 70 100 70 100" fill="white" opacity="0.35"/>
-        <g class="d-left-arm">
-          <path d="M 40 92 Q 24 110 18 130" stroke="#FFCBA4" stroke-width="9" fill="none" stroke-linecap="round"/>
-          <circle cx="17" cy="133" r="6.5" fill="#FFCBA4"/>
-          <circle cx="11" cy="130" r="3.5" fill="#FFCBA4"/>
-          <circle cx="10" cy="136" r="3.5" fill="#FFCBA4"/>
-        </g>
-        <g class="d-right-arm">
-          <path d="M 100 92 Q 116 110 122 130" stroke="#FFCBA4" stroke-width="9" fill="none" stroke-linecap="round"/>
-          <circle cx="123" cy="133" r="6.5" fill="#FFCBA4"/>
-          <circle cx="129" cy="130" r="3.5" fill="#FFCBA4"/>
-          <circle cx="130" cy="136" r="3.5" fill="#FFCBA4"/>
-        </g>
-        <g class="d-skirt">
-          <path d="M 36 120 Q 26 158 14 190 Q 42 203 70 201 Q 98 203 126 190 Q 114 158 104 120 Q 70 134 36 120 Z" fill="#c2185b"/>
-          <path d="M 40 138 Q 30 168 18 193 Q 44 205 70 203 Q 96 205 122 193 Q 110 168 100 138 Q 70 150 40 138 Z" fill="#e32c84" opacity="0.5"/>
-          <circle cx="30"  cy="183" r="2.5" fill="#ff6ec7"/>
-          <circle cx="50"  cy="193" r="2.5" fill="#ff6ec7"/>
-          <circle cx="70"  cy="195" r="2.5" fill="#ff6ec7"/>
-          <circle cx="90"  cy="193" r="2.5" fill="#ff6ec7"/>
-          <circle cx="110" cy="183" r="2.5" fill="#ff6ec7"/>
-        </g>
-        <g class="d-left-leg">
-          <rect x="55" y="198" width="13" height="30" rx="6.5" fill="#FFCBA4"/>
-          <ellipse cx="61.5" cy="230" rx="12" ry="5.5" fill="#c2185b"/>
-          <path d="M 55 226 Q 57 220 65 220 Q 69 220 69 226" fill="#e91e8c"/>
-        </g>
-        <g class="d-right-leg">
-          <rect x="72" y="198" width="13" height="30" rx="6.5" fill="#FFCBA4"/>
-          <ellipse cx="78.5" cy="230" rx="12" ry="5.5" fill="#c2185b"/>
-          <path d="M 72 226 Q 74 220 82 220 Q 86 220 86 226" fill="#e91e8c"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="progress-wrap"><div class="progress-fill" style="width:100%;"></div></div>
-    <p style="font-size:0.95rem;color:var(--muted);margin-bottom:0.5rem;">Report generated by Vivek's Love Engine v2.0</p>
-    <div class="equation"><span class="recipient-first">Meenal</span> + <span class="sender-first">Vivek</span> = <span>&#10084;&#65039;</span></div>
-    <p class="loading-msg">Broadcasting findings to the stars<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
-    <br>
-    <button class="btn btn-outline" id="btn-replay">&#128260; Reset Engine</button>
+  <div class="card">
+    <div id="final-stage" class="dancer-stage pose-hug"></div>
+    <div class="tag">✅ Mission Successful</div>
+    <h2 class="screen-title">The Universe Agrees.</h2>
+    <p class="screen-sub">Perfect match found. System shutting down into "Infinite Love" mode.</p>
+    <button class="btn btn-outline" onclick="location.reload()">Reset Lab 🔄</button>
   </div>
 </section>
 
@@ -372,372 +252,233 @@
 <script>
 /**
  * ══════════════════════════════════════════════
- *   LOVE EXPERIMENT ENGINE v2.0
- *   Optimized for maximum cuteness and science.
+ *   LOVE EXPERIMENT ENGINE v2.1 (FIXED)
  * ══════════════════════════════════════════════
  */
 
-let quizLog = [];
-let quizIndex = 0;
-
 const $ = id => document.getElementById(id);
-const firstName = n => n.split(' ')[0];
+const firstName = n => (n && n.includes(' ')) ? n.split(' ')[0] : (n || 'Subject');
 
-function hydrateUI() {
+// HYDRATION
+function setup() {
+  if (typeof CONFIG === 'undefined') {
+    console.warn("CONFIG not found! Using defaults.");
+    window.CONFIG = { recipientName: "Meenal", senderName: "Vivek", quizData: [] };
+  }
   const rF = firstName(CONFIG.recipientName);
   const sF = firstName(CONFIG.senderName);
-  
   document.querySelectorAll('.recipient-first').forEach(el => el.textContent = rF);
   document.querySelectorAll('.sender-first').forEach(el => el.textContent = sF);
-  $('reveal-sig').textContent = '\u2014 ' + CONFIG.senderName;
+  $('reveal-sig').textContent = '— ' + CONFIG.senderName;
+  $('reveal-love').textContent = "I love you, " + rF + "!";
   
-  // Custom theme color
-  if (CONFIG.themeColor) {
-    document.documentElement.style.setProperty('--brand', CONFIG.themeColor);
-  }
+  // Initial Character Rendering
+  renderCharacters('landing-stage', 'wave');
 }
 
-hydrateUI();
+// SVG GEN
+function renderCharacters(stageId, pose = 'default') {
+  const stage = $(stageId);
+  if (!stage) return;
+  
+  const mSVG = `
+    <svg class="char-svg char-meenal" viewBox="0 0 140 230">
+      <ellipse cx="70" cy="45" rx="22" ry="20" fill="#2d1b1b"/>
+      <circle cx="70" cy="50" r="22" fill="#FFCBA4"/>
+      <circle cx="62" cy="48" r="3" fill="#000"/>
+      <circle cx="78" cy="48" r="3" fill="#000"/>
+      <path d="M 64 60 Q 70 65 76 60" stroke="#e91e8c" stroke-width="2" fill="none"/>
+      <path class="char-skirt" d="M 35 120 L 15 190 Q 70 205 125 190 L 105 120 Z" fill="#e91e8c"/>
+      <g class="char-arm char-arm-left"><path d="M 40 95 L 20 130" stroke="#FFCBA4" stroke-width="8" stroke-linecap="round"/></g>
+      <g class="char-arm char-arm-right"><path d="M 100 95 L 120 130" stroke="#FFCBA4" stroke-width="8" stroke-linecap="round"/></g>
+      <g class="char-leg"><rect x="55" y="195" width="12" height="25" rx="6" fill="#FFCBA4"/></g>
+      <g class="char-leg"><rect x="73" y="195" width="12" height="25" rx="6" fill="#FFCBA4"/></g>
+    </svg>`;
+    
+  const vSVG = `
+    <svg class="char-svg char-vivek" viewBox="0 0 140 230">
+      <path d="M 45 40 Q 70 15 95 40" fill="#1a1a1a"/>
+      <circle cx="70" cy="50" r="22" fill="#FFCCAA"/>
+      <circle cx="62" cy="48" r="3" fill="#000"/>
+      <circle cx="78" cy="48" r="3" fill="#000"/>
+      <rect x="40" y="85" width="60" height="45" rx="5" fill="#22d3ee"/>
+      <path d="M 45 130 L 95 130 L 100 200 L 40 200 Z" fill="#1e293b"/>
+      <g class="char-arm char-arm-left char-arm-inner"><path d="M 40 95 L 20 130" stroke="#FFCCAA" stroke-width="8" stroke-linecap="round"/></g>
+      <g class="char-arm char-arm-right"><path d="M 100 95 L 120 130" stroke="#FFCCAA" stroke-width="8" stroke-linecap="round"/></g>
+      <g class="char-leg"><rect x="45" y="200" width="15" height="10" rx="5" fill="#000"/></g>
+      <g class="char-leg"><rect x="80" y="200" width="15" height="10" rx="5" fill="#000"/></g>
+    </svg>`;
 
-/* ------- SCREEN MANAGEMENT ------- */
-const SCREENS = ['landing','game','result','quiz','reveal','final'];
+  stage.className = `dancer-stage pose-${pose}`;
+  stage.innerHTML = `<div class="char-container">${vSVG}${mSVG}</div>`;
+}
+
+// SCREEN NAV
 function showScreen(name) {
-  SCREENS.forEach(s => $('screen-' + s).classList.remove('active'));
-  const el = $('screen-' + name);
-  el.classList.add('active');
-  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('screen-' + name).classList.add('active');
 }
 
-async function runTheatreSequence(msgs, nextFn) {
-  const theatre = $('theatre-screen');
-  const tMsg = $('theatre-msg');
-  theatre.classList.add('active');
-  
-  for (const msg of msgs) {
-    tMsg.classList.remove('show');
+async function startTheatre(msgs, done) {
+  const s = $('theatre-screen');
+  const m = $('theatre-msg');
+  s.classList.add('active');
+  for (const text of msgs) {
+    m.classList.remove('show');
     await new Promise(r => setTimeout(r, 400));
-    tMsg.textContent = msg;
-    tMsg.classList.add('show');
-    await new Promise(r => setTimeout(r, 1600));
+    m.textContent = text;
+    m.classList.add('show');
+    await new Promise(r => setTimeout(r, 1500));
   }
-  
-  theatre.classList.remove('active');
-  nextFn();
+  s.classList.remove('active');
+  done();
 }
 
-/* ------- BACKGROUND HEARTS CANVAS ------- */
-(function() {
-  const canvas = $('hearts-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H;
-  const hearts = [];
-  const CHARS  = ['\u2764\uFE0F','\uD83D\uDC95','\uD83D\uDC97','\uD83D\uDC93','\uD83D\uDC9D','\uD83D\uDC96'];
+// GAME LOGIC
+$('btn-start').onclick = () => {
+  startTheatre(["Scanning DNA...", "Analyzing Charm Levels...", "Subject 100% Compatible."], () => {
+    showScreen('game');
+    runGame();
+  });
+};
 
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function spawn() {
-    hearts.push({ x: Math.random()*W, y: H+30, size: 14+Math.random()*20, speed: 0.4+Math.random()*0.9, drift: (Math.random()-0.5)*0.4, opacity: 0.15+Math.random()*0.25, char: CHARS[Math.floor(Math.random()*CHARS.length)] });
-  }
-
-  let spawnT = 0;
-  (function frame(ts) {
-    ctx.clearRect(0,0,W,H);
-    if (ts - spawnT > 900) { spawn(); spawnT = ts; }
-    for (let i = hearts.length-1; i >= 0; i--) {
-      const h = hearts[i];
-      h.y -= h.speed; h.x += h.drift;
-      ctx.globalAlpha = h.opacity;
-      ctx.font = h.size + 'px serif';
-      ctx.fillText(h.char, h.x, h.y);
-      if (h.y < -40) hearts.splice(i, 1);
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(frame);
-  })();
-})();
-
-/* ------- GAME ------- */
-$('btn-start').addEventListener('click', () => {
-  runTheatreSequence([
-    "Scanning Environment...",
-    "Subject: " + firstName(CONFIG.recipientName) + " detected.",
-    "Bypassing Normal Reality...",
-    "Entering Heart Space."
-  ], startGame);
-});
-
-const HEART_EMOJIS = ['\u2764\uFE0F','\uD83D\uDC96','\uD83D\uDC97','\uD83D\uDC93','\uD83D\uDC9D','\uD83D\uDC95','\uD83E\uDE77','\uD83D\uDC9E'];
-const GAME_HINTS   = ["Synchronization increasing!","Aesthetic levels off the charts!","Vivek's heart frequency detected nearby.","Collecting high-quality affection units.","System Status: Perfectly Smitten.","Neural pathways: Full of you.","Data suggests you are very loved."];
-
-let score = 0, gameTimer = null, spawnInterval = null, hintTimeout = null;
-let timeLeft = CONFIG.gameDuration;
-
-function startGame() {
-  score = 0; timeLeft = CONFIG.gameDuration;
-  $('score-display').textContent = '0';
-  $('timer-display').textContent = timeLeft;
+let score = 0;
+function runGame() {
+  score = 0;
+  let time = CONFIG.gameDuration || 25;
   const wrap = $('game-canvas-wrap');
-  wrap.querySelectorAll('.floating-heart-el').forEach(h => h.remove());
-  showScreen('game');
-  spawnInterval = setInterval(() => spawnHeart(wrap), 750);
-  gameTimer = setInterval(() => {
-    timeLeft--;
-    $('timer-display').textContent = timeLeft;
-    if (timeLeft <= 5) { $('timer-display').style.color = 'var(--brand)'; $('timer-display').style.animation = 'pulseRing 0.6s ease-in-out infinite'; }
-    if (timeLeft <= 0) endGame();
-  }, 1000);
-  showHint('Click the hearts to collect love units! \uD83D\uDC98', 3500);
-}
-
-function spawnHeart(wrap) {
-  const el  = document.createElement('div');
-  el.className = 'floating-heart-el';
-  el.textContent = HEART_EMOJIS[Math.floor(Math.random()*HEART_EMOJIS.length)];
-  const dur = 4 + Math.random()*6;
-  el.style.cssText = 'left:'+(5+Math.random()*85)+'vw;bottom:-60px;animation-duration:'+dur+'s;font-size:'+(2+Math.random()*1.8)+'rem;';
-  el.addEventListener('click', e => catchHeart(e, el, wrap));
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), dur*1000);
-}
-
-function catchHeart(e, el, wrap) {
-  e.stopPropagation();
-  score++;
-  $('score-display').textContent = score;
-  const pop = document.createElement('div');
-  pop.className = 'pop-text';
-  pop.textContent = '+1 \uD83D\uDC95';
-  pop.style.cssText = 'left:'+e.clientX+'px;top:'+e.clientY+'px;';
-  wrap.appendChild(pop);
-  setTimeout(() => pop.remove(), 800);
-  el.style.transform = 'scale(2.5) rotate(15deg)'; el.style.opacity = '0';
-  setTimeout(() => el.remove(), 250);
-  if (score % 4 === 0) showHint(GAME_HINTS[Math.floor(Math.random()*GAME_HINTS.length)], 2000);
-  if ([5,15,30,50].includes(score)) spawnMiniConfetti(e.clientX, e.clientY);
-}
-
-function showHint(msg, dur) {
-  clearTimeout(hintTimeout);
-  const h = $('game-hint');
-  h.textContent = msg; h.classList.add('show');
-  hintTimeout = setTimeout(() => h.classList.remove('show'), dur);
-}
-
-function endGame() {
-  clearInterval(gameTimer); clearInterval(spawnInterval); clearTimeout(hintTimeout);
-  $('timer-display').style.animation = ''; $('timer-display').style.color = '';
-  $('game-canvas-wrap').querySelectorAll('.floating-heart-el').forEach(h => h.remove());
-  $('result-score').textContent = score;
-  showScreen('result');
-  runResultMessages();
-}
-
-function runResultMessages() {
-  const msgs = [
-    'Parsing collected emotional frequencies...',
-    'Matching results with Vivek\'s expectations...',
-    'Factorizing the Dream Ratio...',
-    'Result: 100% Match Found.'
-  ];
-  let i = 0;
-  const el = $('result-loading');
-  el.textContent = msgs[i];
   const iv = setInterval(() => {
-    i++;
-    if (i >= msgs.length) { clearInterval(iv); return; }
-    el.style.opacity = 0;
-    setTimeout(() => { el.textContent = msgs[i]; el.style.opacity = 1; el.style.transition = 'opacity 0.4s'; }, 300);
+    const el = document.createElement('div');
+    el.className = 'floating-heart-el';
+    el.textContent = '❤️';
+    el.style.left = (Math.random() * 80 + 10) + 'vw';
+    el.style.bottom = '-50px';
+    el.onclick = () => { score++; $('score-display').textContent = score; el.remove(); };
+    wrap.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+  }, 800);
+
+  const tIv = setInterval(() => {
+    time--;
+    $('timer-display').textContent = time;
+    if (time <= 0) {
+      clearInterval(iv); clearInterval(tIv);
+      $('result-score').textContent = score;
+      showScreen('result');
+      runResultLoop();
+    }
+  }, 1000);
+}
+
+function runResultLoop() {
+  const msgs = ["Computing matching ratio...", "Consulting the stars...", "Result confirmed."];
+  let i = 0;
+  setInterval(() => {
+    if (i < msgs.length) $('result-loading').textContent = msgs[i++];
   }, 1200);
 }
 
-$('btn-to-quiz').addEventListener('click', () => {
-  runTheatreSequence([
-    "Accessing Neural Link...",
-    "Subject Calibration Protocol Engaged.",
-    "Please answer carefully.",
-    "The stars are listening."
-  ], startQuiz);
-});
+// QUIZ LOGIC
+$('btn-to-quiz').onclick = () => {
+  showScreen('quiz');
+  renderQuiz(0);
+};
 
-/* ------- QUIZ ------- */
-function startQuiz() { 
-  quizIndex = 0; 
-  quizLog = [];
-  showScreen('quiz'); 
-  renderQuestion(); 
-}
-
-function renderQuestion() {
-  const q = CONFIG.quizData[quizIndex];
-  if (!q) { showReveal(); return; }
-
-  const qEl = $('quiz-question'), sEl = $('quiz-sub'), oEl = $('quiz-options'), rEl = $('quiz-response');
-  qEl.style.opacity = 0; sEl.style.opacity = 0;
+let quizLog = [];
+function renderQuiz(idx) {
+  if (idx >= CONFIG.quizData.length) { showReveal(); return; }
+  const q = CONFIG.quizData[idx];
+  renderCharacters('quiz-stage', q.pose || 'default');
+  $('quiz-question').textContent = q.question;
+  $('quiz-sub').textContent = q.sub;
+  $('quiz-progress').style.width = ((idx / CONFIG.quizData.length) * 100) + '%';
   
-  setTimeout(() => {
-    qEl.textContent = q.question; sEl.textContent = q.sub;
-    qEl.style.transition = sEl.style.transition = 'opacity 0.4s';
-    qEl.style.opacity = sEl.style.opacity = 1;
-  }, 200);
-
-  const prog = ((quizIndex) / CONFIG.quizData.length) * 100;
-  $('quiz-progress').style.width = prog + '%';
-  
-  rEl.textContent = ''; oEl.innerHTML = '';
-  
-  q.options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.innerHTML = opt.label;
-    btn.addEventListener('click', () => selectAnswer(opt.response, btn, opt.label));
-    oEl.appendChild(btn);
+  const opts = $('quiz-options');
+  opts.innerHTML = '';
+  q.options.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'btn btn-outline';
+    b.textContent = o.label;
+    b.onclick = () => {
+      quizLog.push({ q: q.question, a: o.label });
+      $('quiz-response').textContent = o.response;
+      setTimeout(() => renderQuiz(idx + 1), 2000);
+    };
+    opts.appendChild(b);
   });
 }
 
-function selectAnswer(response, clickedBtn, chosenLabel) {
-  quizLog.push({ question: CONFIG.quizData[quizIndex].question, chosen: chosenLabel });
-  $('quiz-options').querySelectorAll('.btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; });
-  
-  clickedBtn.style.opacity = '1'; 
-  clickedBtn.style.background = 'var(--brand-soft)'; 
-  clickedBtn.style.borderColor = 'var(--brand)';
-  clickedBtn.style.transform = 'scale(1.05)';
-  
-  const rEl = $('quiz-response');
-  rEl.style.animation = 'none'; void rEl.offsetWidth; rEl.style.animation = '';
-  rEl.textContent = response;
-  
-  setTimeout(() => { 
-    quizIndex++; 
-    if (quizIndex < CONFIG.quizData.length) {
-      renderQuestion();
-    } else {
-      $('quiz-progress').style.width = '100%';
-      setTimeout(showReveal, 1000);
-    }
-  }, 2200);
-}
-
-/* ------- REVEAL ------- */
 function showReveal() {
   showScreen('reveal');
-  setTimeout(() => $('conf-stamp').classList.add('show'), 400);
-  setTimeout(() => ($('reveal-heart').style.opacity = '1'), 800);
-  setTimeout(() => $('reveal-love').classList.add('show'), 1200);
-  setTimeout(() => $('reveal-sig').classList.add('show'), 2000);
-  setTimeout(() => ($('btn-to-modal').style.opacity = '1'), 3000);
-  spawnEmojiBurst(window.innerWidth/2, window.innerHeight/2);
+  setTimeout(() => $('reveal-love').classList.add('show'), 1000);
+  setTimeout(() => $('reveal-sig').style.opacity = 1, 2000);
+  setTimeout(() => $('btn-to-modal').style.opacity = 1, 3000);
 }
 
-$('btn-to-modal').addEventListener('click', openModal);
+$('btn-to-modal').onclick = () => $('modal').classList.add('open');
 
-/* ------- MODAL + DODGE ------- */
-let dodgeCount = 0;
-function openModal() { dodgeCount = 0; $('modal').classList.add('open'); setupDodge(); }
-function setupDodge() {
-  $('btn-yes').addEventListener('click', handleYes);
-  $('btn-yes2').addEventListener('click', handleYes);
-  $('btn-yes2').addEventListener('mousemove', handleDodge);
-}
+// DODGE BUTTON
+let dodge = 0;
+$('btn-yes2').onmousemove = (e) => {
+  if (dodge > 5) return;
+  const b = e.target;
+  b.style.transform = `translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*100}px)`;
+  dodge++;
+};
 
-function handleDodge(e) {
-  if (dodgeCount >= 4) return;
-  dodgeCount++;
-  const btn = e.currentTarget;
-  const dx = (Math.random()-0.5)*200, dy = (Math.random()-0.5)*120;
-  btn.style.transform = 'translate('+dx+'px,'+dy+'px) rotate('+((Math.random()-0.5)*20)+'deg)';
-  setTimeout(() => (btn.style.transform = ''), 400);
-}
-
-function handleYes(e) {
-  e.stopPropagation();
+const handleFinal = () => {
   $('modal').classList.remove('open');
-  triggerFinalCelebration();
-}
+  showScreen('final');
+  renderCharacters('final-stage', 'hug');
+  launchConfetti();
+  sendEmail();
+};
+$('btn-yes').onclick = handleFinal;
+$('btn-yes2').onclick = handleFinal;
 
-/* ------- CELEBRATION ------- */
-function triggerFinalCelebration() {
-  launchConfetti(200);
-  spawnEmojiBurst(window.innerWidth/2, window.innerHeight/2);
-  setTimeout(() => spawnEmojiBurst(window.innerWidth*0.2, window.innerHeight*0.3), 300);
-  setTimeout(() => spawnEmojiBurst(window.innerWidth*0.8, window.innerHeight*0.3), 600);
-  sendResultsEmail();
-  setTimeout(() => showScreen('final'), 1200);
-}
-
-function launchConfetti(count) {
-  const colors = ['#e91e8c','#ff6b6b','#ffc94d','#a855f7','#22d3ee'];
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const c = document.createElement('div');
-      c.className = 'confetti-piece';
-      c.style.cssText = 'left:'+Math.random()*100+'vw;top:-20px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(6+Math.random()*12)+'px;height:'+(6+Math.random()*12)+'px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation-duration:'+(2+Math.random()*3)+'s;';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 5000);
-    }, i*12);
-  }
-}
-
-function spawnEmojiBurst(cx, cy) {
-  const EMOJIS = ['\u2764\uFE0F','\uD83D\uDC96','\uD83D\uDC97','\u2728','\uD83C\uDF1F','\uD83D\uDC95','\uD83D\uDC9D','\uD83C\uDF89'];
-  for (let i = 0; i < 12; i++) {
-    const el = document.createElement('div');
-    el.style.cssText = 'position:fixed;left:'+cx+'px;top:'+cy+'px;font-size:'+(1.5+Math.random())+'rem;pointer-events:none;z-index:999;transition:transform 1s ease-out,opacity 1s ease-out;opacity:1;';
-    el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-    document.body.appendChild(el);
-    const angle = Math.random()*Math.PI*2, dist = 100+Math.random()*220;
-    const tx = Math.cos(angle)*dist, ty = Math.sin(angle)*dist-120;
-    setTimeout(() => { el.style.transform = 'translate('+tx+'px,'+ty+'px) scale(1.8)'; el.style.opacity = '0'; }, 50);
-    setTimeout(() => el.remove(), 1100);
-  }
-}
-
-function spawnMiniConfetti(cx, cy) {
-  const colors = ['#e91e8c','#ff6ec7','#ffc94d','#ff6b6b'];
-  for (let i = 0; i < 20; i++) {
+function launchConfetti() {
+  for (let i = 0; i < 100; i++) {
     const c = document.createElement('div');
     c.className = 'confetti-piece';
-    c.style.cssText = 'left:'+(cx+(Math.random()-0.5)*80)+'px;top:'+cy+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:8px;height:8px;border-radius:50%;animation-duration:1s;';
+    c.style.cssText = `left:${Math.random()*100}vw; top:-10px; background:hsl(${Math.random()*360}, 70%, 60%); width:10px; height:10px; animation-duration:${Math.random()*3+2}s;`;
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 1300);
   }
 }
 
-/* ------- EMAIL (via proxy.js) ------- */
-async function sendResultsEmail() {
-  if (!CONFIG.emailProxyUrl) return;
+async function sendEmail() {
+  const body = JSON.stringify({
+    subject: `🔬 Lab Report: ${CONFIG.recipientName} is in love!`,
+    html: `<h1>Experiment Success!</h1><p>Score: ${score}</p>`
+  });
+  try { await fetch(CONFIG.emailProxyUrl, { method: 'POST', body, headers: {'Content-Type': 'application/json'}}); } catch(e){}
+}
 
-  const rows = quizLog.map(function(entry) {
-    return '<tr><td style="padding:10px;border-bottom:1px solid #eee;">' + entry.question + '</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:bold;color:#e91e8c;">' + entry.chosen + '</td></tr>';
-  }).join('');
+// INIT
+window.onload = setup;
 
-  const emailHtml = '<div style="font-family:sans-serif;background:#fff5fa;padding:2rem;border-radius:15px;"><h1 style="color:#e91e8c;">Experimental Data Captured</h1><p>The subject, ' + CONFIG.recipientName + ', has completed the journey.</p><h3>Game Insights</h3><p>Hearts Collected: ' + score + '</p><h3>Calibration Insights</h3><table style="width:100%">' + rows + '</table><p style="margin-top:2rem">Sent by the Official Love Lab</p></div>';
-
-  try {
-    await fetch(CONFIG.emailProxyUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        subject: '🔬 Lab Results: ' + firstName(CONFIG.recipientName) + ' completed the Experiment!',
-        html: emailHtml
-      })
+// BACKGROUND CANVAS
+(function() {
+  const c = $('hearts-canvas');
+  const ctx = c.getContext('2d');
+  let w, h;
+  window.onresize = () => { w = c.width = window.innerWidth; h = c.height = window.innerHeight; };
+  window.onresize();
+  const hearts = [];
+  setInterval(() => {
+    hearts.push({ x: Math.random()*w, y: h+20, s: Math.random()*15+10, v: Math.random()*2+1 });
+  }, 500);
+  function draw() {
+    ctx.clearRect(0,0,w,h);
+    hearts.forEach((ht, i) => {
+      ht.y -= ht.v;
+      ctx.font = ht.s + "px serif";
+      ctx.fillText("❤️", ht.x, ht.y);
+      if (ht.y < -20) hearts.splice(i, 1);
     });
-  } catch (err) {}
-}
-
-/* ------- REPLAY ------- */
-$('btn-replay').addEventListener('click', () => {
-  window.location.reload();
-});
-
-/* ------- MUSIC ------- */
-if (CONFIG.backgroundMusic) {
-  const audio = new Audio(CONFIG.backgroundMusic);
-  audio.loop = true; audio.volume = 0.3;
-  document.addEventListener('click', () => audio.play().catch(() => {}), { once: true });
-}
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 </script>
 </body>
 </html>
